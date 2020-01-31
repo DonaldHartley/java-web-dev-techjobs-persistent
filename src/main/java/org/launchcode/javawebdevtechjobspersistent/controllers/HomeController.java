@@ -14,7 +14,8 @@ import java.util.List;
  */
 @Controller
 public class HomeController {
-
+    
+    // localhost:8080/
     @RequestMapping("")
     public String index(Model model) {
 
@@ -22,7 +23,8 @@ public class HomeController {
 
         return "index";
     }
-
+    
+    // localhost:8080/add/
     @GetMapping("add")
     public String displayAddJobForm(Model model) {
         model.addAttribute("title", "Add Job");
