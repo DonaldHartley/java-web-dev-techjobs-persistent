@@ -14,41 +14,39 @@ import java.util.Optional;
 @Controller
 @RequestMapping("employers")
 public class EmployerController {
+  
+  @Autowired
+  private EmployerRepository employerRepository;
+  
+  @GetMapping("add")
+  public String displayAddEmployerForm(Model model) {
+    model.addAttribute(new Employer());
+    return "employers/add";
+  }
+  
+  @PostMapping("add")
+  public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer,
+                                       Errors errors, Model model) {
     
-    @Autowired
-    private EmployerRepository employerRepository;
-
-    @GetMapping("add")
-    public String displayAddEmployerForm(Model model) {
-        model.addAttribute(new Employer());
-        return "employers/add";
+    if (errors.hasErrors()) {
+      return "employers/add";
     }
-
-    @PostMapping("add")
-    public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer,
-                                    Errors errors, Model model) {
-
-        System.out.println(newEmployer.getLocation());
-        System.out.println(newEmployer.getName());
-        if (errors.hasErrors()) {
-            return "employers/add";
-        }
-
-        employerRepository.save(newEmployer);
-        int employerId = newEmployer.getId();
-        return "redirect:view/" + employerId;
+    
+    employerRepository.save(newEmployer);
+    int employerId = newEmployer.getId();
+    return "redirect:view/" + employerId;
+  }
+  
+  @GetMapping("view/{employerId}")
+  public String displayViewEmployer(Model model, @PathVariable int employerId) {
+    
+    Optional<Employer> optEmployer = employerRepository.findById(employerId);
+    if (optEmployer.isPresent()) {
+      Employer employer = optEmployer.get();
+      model.addAttribute("employer", employer);
+      return "employers/view";
+    } else {
+      return "redirect:../";
     }
-
-    @GetMapping("view/{employerId}")
-    public String displayViewEmployer(Model model, @PathVariable int employerId) {
-
-        Optional<Employer> optEmployer = employerRepository.findById(employerId);
-        if (optEmployer.isPresent()) {
-            Employer employer = optEmployer.get();
-            model.addAttribute("employer", employer);
-            return "employers/view";
-        } else {
-            return "redirect:../";
-        }
-    }
+  }
 }

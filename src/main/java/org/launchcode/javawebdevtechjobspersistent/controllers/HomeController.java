@@ -1,6 +1,11 @@
 package org.launchcode.javawebdevtechjobspersistent.controllers;
 
+import org.launchcode.javawebdevtechjobspersistent.models.Employer;
 import org.launchcode.javawebdevtechjobspersistent.models.Job;
+import org.launchcode.javawebdevtechjobspersistent.models.Skill;
+import org.launchcode.javawebdevtechjobspersistent.models.data.EmployerRepository;
+import org.launchcode.javawebdevtechjobspersistent.models.data.SkillRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,6 +20,12 @@ import java.util.List;
 @Controller
 public class HomeController {
     
+    @Autowired
+    private EmployerRepository employerRepository;
+    
+    @Autowired
+    private SkillRepository skillRepository;
+    
     // localhost:8080/
     @RequestMapping("")
     public String index(Model model) {
@@ -28,6 +39,12 @@ public class HomeController {
     @GetMapping("add")
     public String displayAddJobForm(Model model) {
         model.addAttribute("title", "Add Job");
+        Iterable<Employer> employers;
+        employers = employerRepository.findAll();
+        model.addAttribute("employers", employers);
+        Iterable<Skill> skills;
+        skills = skillRepository.findAll();
+        model.addAttribute("skills", skills);
         model.addAttribute(new Job());
         return "add";
     }

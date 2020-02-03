@@ -5,7 +5,8 @@ name - varchar(255)
 skills - varchar(255)
 
 ## Part 2: Test it with SQL
-
+SELECT name FROM employers
+WHERE name="St. Louis";
 
 ## Part 3: Test it with SQL
 
