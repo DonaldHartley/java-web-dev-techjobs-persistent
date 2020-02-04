@@ -9,6 +9,9 @@ SELECT name FROM employers
 WHERE name="St. Louis";
 
 ## Part 3: Test it with SQL
-
+DROP techjobs.job;
 
 ## Part 4: Test it with SQL
+SELECT skill.name, skills.description FROM techjobs.skill
+WHERE skillsjob IS NOT NULL
+ORDER BY skill.name ASC;
